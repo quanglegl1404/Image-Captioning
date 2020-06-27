@@ -1,0 +1,15 @@
+vncorenlp
+wheel
+Pillow
+torch
+pickle-mixin
+pytorch_pretrained_bert
+nltk
+setuptools
+Cython
+pycocotools
+matplotlib
+torchvision
+scikit-image
+torchtext
+fairseq
