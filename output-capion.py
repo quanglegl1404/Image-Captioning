@@ -86,7 +86,7 @@ def main():
         try:
             image_path = config.val_img_path + image_data['file_name']
             image = load_image(image_path, transform= transform)
-            image_tensor = image.to(device)
+            #image_tensor = image.to(device)
 
             caption_idx, _ = caption_image_beam_search(encoder = encoder, decoder = decoder, word_map = vocab, image = image)
             print(f"Caption index: {caption_idx}")

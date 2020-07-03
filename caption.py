@@ -44,7 +44,7 @@ def caption_image_beam_search(encoder, decoder, word_map, image, beam_size=3):
 
     # Encode
     # image = image.unsqueeze(0)  # (1, 3, 256, 256)
-    encoder_out = encoder(image)  # (1, enc_image_size, enc_image_size, encoder_dim)
+    encoder_out = encoder(image).to(device)  # (1, enc_image_size, enc_image_size, encoder_dim)
     enc_image_size = encoder_out.size(1)
     encoder_dim = encoder_out.size(3)
 
