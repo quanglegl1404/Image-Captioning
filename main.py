@@ -38,7 +38,7 @@ import imageio
 from encoder import Encoder
 from decoder import Decoder
 from config import Config
-from utils import load_checkpoints
+#from utils import load_checkpoints
 import os
 
 ###################
@@ -112,7 +112,8 @@ train_loader = get_loader('train', vocab, batch_size)
 criterion = nn.CrossEntropyLoss().to(device)
 
 if from_checkpoint:
-    encoder, decoder, decoder_optimizer = load_checkpoints()
+    print("Do not load checkpoint")
+    # encoder, decoder, decoder_optimizer = load_checkpoints()
 
 else:
     encoder = Encoder().to(device)
