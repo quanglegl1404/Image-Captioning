@@ -72,8 +72,8 @@ def main():
     print("Model built")
     encoder_path = config.encoder_path
     decoder_path = config.decoder_path
-    encoder.load_state_dict(torch.load(encoder_path))
-    decoder.load_state_dict(torch.load(decoder_path))
+    encoder.load_state_dict(torch.load(encoder_path), strict=False)
+    decoder.load_state_dict(torch.load(decoder_path), strict=False)
 
     print("Model loaded")
     images = get_val_images(config.validation_path)
