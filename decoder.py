@@ -108,6 +108,7 @@ class Decoder(nn.Module):
         mean_encoder_out = encoder_out.mean(dim = 1)
         h = self.h_lin(mean_encoder_out)
         c = self.c_lin(mean_encoder_out)
+        return h,c
 
     def forward(self, encoder_out, encoded_captions, caption_lengths):    
         batch_size = encoder_out.size(0)

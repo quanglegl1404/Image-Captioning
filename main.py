@@ -149,7 +149,6 @@ def train():
             #     continue
 
             imgs = encoder(imgs.to(device))
-            print(f"Encoder out: {imgs}")
             caps = caps.to(device)
 
             scores, caps_sorted, decode_lengths, alphas = decoder(imgs, caps, caplens)
