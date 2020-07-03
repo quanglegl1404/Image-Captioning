@@ -93,3 +93,5 @@ def main():
         except Exception as e:
             print(e)
             pass
+
+main()
