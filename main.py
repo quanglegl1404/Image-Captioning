@@ -224,13 +224,13 @@ def train():
             'model_state_dict': decoder.state_dict(),
             'optimizer_state_dict': decoder_optimizer.state_dict(),
             'loss': loss,
-            }, './checkpoints/june21/decoder_epoch'+str(epoch+1)+'-june-21-0004')
+            }, './checkpoints/decoder_epoch'+str(epoch+1)+'-july-2-baseline')
 
         torch.save({
             'epoch': epoch,
             'model_state_dict': encoder.state_dict(),
             'loss': loss,
-            }, './checkpoints/june21/encoder_epoch'+str(epoch+1)+'-june-21-0004')
+            }, './checkpoints/encoder_epoch'+str(epoch+1)+'-july-21-baseline')
 
         print('epoch checkpoint saved')
 
