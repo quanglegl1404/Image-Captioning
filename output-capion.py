@@ -19,7 +19,7 @@ from torch.nn.utils.rnn import pack_padded_sequence
 
 from config import Config
 
-from caption_gen.caption import caption_image_beam_search
+from caption import caption_image_beam_search
 
 
 
