@@ -70,8 +70,8 @@ def main():
     decoder = decoder.to(device)
 
     print("Model built")
-    encoder_path = args.encoder_path if args.encoder_path else config.encoder_path
-    decoder_path = args.decoder_path if args.decoder_path else config.decoder_path
+    encoder_path = config.encoder_path
+    decoder_path = config.decoder_path
     encoder.load_state_dict(torch.load(encoder_path))
     decoder.load_state_dict(torch.load(decoder_path))
 
