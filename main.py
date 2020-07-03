@@ -54,8 +54,8 @@ decoder_lr = config.decoder_lr
 
 # if both are false them model = baseline
 
-glove_model = False
-bert_model = True
+glove_model = config.glove_model
+bert_model = config.bert_model
 
 from_checkpoint = False
 train_model = True

@@ -84,6 +84,7 @@ class Decoder(nn.Module):
         self.fc.weight.data.uniform_(-0.1, 0.1)
         
         if not use_bert:
+            print("Using Baseline model")
             self.embedding = nn.Embedding(vocab_size, self.embed_dim)
             self.embedding.weight.data.uniform_(-0.1, 0.1)
 
@@ -95,6 +96,7 @@ class Decoder(nn.Module):
             for p in self.embedding.parameters():
                 p.requires_grad = True
         else:
+            print("Using Bert Model")
             self.embedding = nn.Embedding(vocab_size, self.embed_dim)
             self.embedding.weight.data.uniform_(-0.1, 0.1)
 
