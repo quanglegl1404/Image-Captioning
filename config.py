@@ -6,7 +6,7 @@ class Config(object):
     validation_path = './data/annotations/captions_val2017.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
-    machine_output_path = './data/june21_v1_machine_output.json'
+    machine_output_path = './data/july_v1_machine_output.json'
     threshold = 1
 
     # hyperparams
