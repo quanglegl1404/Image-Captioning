@@ -10,10 +10,10 @@ import argparse
 #from scipy.misc import imread, imresize
 from PIL import Image
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def caption_image_beam_search(encoder, decoder, word_map, image, beam_size=3):
+def caption_image_beam_search(encoder, decoder, word_map, image, beam_size=3, device):
     """
     Reads an image and captions it with beam search.
 
