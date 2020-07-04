@@ -35,7 +35,7 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased', do_low
 def load_image(image_path, transform=None):
     try:
         print('Open image')
-        image = Image.open(image_path).to(device)
+        image = Image.open(image_path)
         image = image.resize([224, 224], Image.LANCZOS)
         print('After resize image')
         if transform is not None:
