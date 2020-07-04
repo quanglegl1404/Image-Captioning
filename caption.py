@@ -116,10 +116,10 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
 
         # Add new words to sequences, alphas
         seqs = torch.cat([seqs[prev_word_inds], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
-        print(f"Sequence {seq}")
+        
         seqs_alpha = torch.cat([seqs_alpha[prev_word_inds], alpha[prev_word_inds].unsqueeze(1)],
                                dim=1)  # (s, step+1, enc_image_size, enc_image_size)
-
+        
         # Which sequences are incomplete (didn't reach <end>)?
         incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if
                            next_word != word_map['<end>']]
