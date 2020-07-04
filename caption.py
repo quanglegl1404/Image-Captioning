@@ -119,7 +119,7 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
         
         seqs_alpha = torch.cat([seqs_alpha[prev_word_inds], alpha[prev_word_inds].unsqueeze(1)],
                                dim=1)  # (s, step+1, enc_image_size, enc_image_size)
-        
+
         # Which sequences are incomplete (didn't reach <end>)?
         incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if
                            next_word != word_map['<end>']]
@@ -142,11 +142,10 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
 
         # Proceed with incomplete sequences
         if k == 0:
+            print("k==0, break")
             break
         seqs = seqs[incomplete_inds]
-        print(f"Sequence with imcomplete inds: {seqs}")
         seqs_alpha = seqs_alpha[incomplete_inds]
-        print(f"Squence alpha with imcomplete inds: {seqs_alpha}")
         h = h[prev_word_inds[incomplete_inds]]
         c = c[prev_word_inds[incomplete_inds]]
         encoder_out = encoder_out[prev_word_inds[incomplete_inds]]
@@ -155,6 +154,7 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
 
         # Break if things have been going on too long
         if step > 50:
+            print("step > 50")
             break
         step += 1
     print(f"Complete seq scores: {complete_seqs_scores}")
