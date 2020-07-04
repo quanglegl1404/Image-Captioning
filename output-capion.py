@@ -39,12 +39,12 @@ def load_image(image_path, transform=None):
         image = image.resize([224, 224], Image.LANCZOS)
         print('After resize image')
         if transform is not None:
-            image = transform(image).unsqueeze(0)
+            image = transform(image.to(device)).unsqueeze(0)
         
         return image
     except Exception as e:
-         print(f"Error at image {image_path}; {e}")
-         return image
+        print(f"Error at image {image_path}; {e}")
+        return image
 
 def get_val_images(val_path):
     f = open(config.validation_path, 'r+', encoding='utf8')
