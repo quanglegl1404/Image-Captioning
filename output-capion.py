@@ -34,12 +34,10 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased', do_low
 
 def load_image(image_path, transform=None):
     try:
-        print('Open image')
         image = Image.open(image_path)
         image = image.resize([224, 224], Image.LANCZOS)
-        print(f'After resize image: {type(image)}')
         if transform is not None:
-            image = transform(image.to(device)).unsqueeze(0)
+            image = transform(image).unsqueeze(0)
         
         return image
     except Exception as e:
@@ -89,9 +87,9 @@ def main():
             image_path = config.val_img_path + image_data['file_name']
             print("Load image")
             image = load_image(image_path, transform= transform)
-            #image_tensor = image.to(device)
+            image_tensor = image.to(device)
 
-            caption_idx, _ = caption_image_beam_search(encoder = encoder, decoder = decoder, word_map = vocab, image = image, device = device)
+            caption_idx, _ = caption_image_beam_search(encoder = encoder, decoder = decoder, word_map = vocab, image = image_tensor, device = device)
             print(f"Caption index: {caption_idx}")
         except Exception as e:
             print(e)
