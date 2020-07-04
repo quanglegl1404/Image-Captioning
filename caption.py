@@ -82,23 +82,17 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
         embeddings = decoder.embedding(k_prev_words).squeeze(1)  # (s, embed_dim)
 
         awe, alpha = decoder.attention(encoder_out, h)  # (s, encoder_dim), (s, num_pixels)
-        print(f"Attention weight: {awe}")
-        print(f"Alpha {alpha}")
 
         alpha = alpha.view(-1, enc_image_size, enc_image_size)  # (s, enc_image_size, enc_image_size)
 
         gate = decoder.sigmoid(decoder.f_beta(h))  # gating scalar, (s, encoder_dim)
-        print(f"Gate {gate}")
+
         awe = gate * awe
 
         h, c = decoder.decode_step(torch.cat([embeddings, awe], dim=1), (h, c))  # (s, decoder_dim)
-        print(f"Hidden: {h}")
-        print(f"Cell: {c}")
 
         scores = decoder.fc(h)  # (s, vocab_size)
-        print(f"Scores: {scores}")
         scores = F.log_softmax(scores, dim=1)
-        print(f"Scores after log soft max: {scores}")
 
         # Add
         scores = top_k_scores.expand_as(scores) + scores  # (s, vocab_size)
@@ -122,6 +116,7 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
 
         # Add new words to sequences, alphas
         seqs = torch.cat([seqs[prev_word_inds], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
+        print(f"Sequence {seq}")
         seqs_alpha = torch.cat([seqs_alpha[prev_word_inds], alpha[prev_word_inds].unsqueeze(1)],
                                dim=1)  # (s, step+1, enc_image_size, enc_image_size)
 
@@ -130,14 +125,18 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
                            next_word != word_map['<end>']]
         print(f"Incomplete inds: {incomplete_inds}")
         complete_inds = list(set(range(len(next_word_inds))) - set(incomplete_inds))
-        print(f"Len of complete inds: {complete_inds}")
+        print(f"Len of complete inds: {len(complete_inds)}")
 
         # Set aside complete sequences
         if len(complete_inds) > 0:
             print("Length of complete inds > 0")
+            print(f"getting sequence {seqs[complete_inds].tolist()}")
             complete_seqs.extend(seqs[complete_inds].tolist())
+            print(f"Complete sequence: {complete_seqs}")
             complete_seqs_alpha.extend(seqs_alpha[complete_inds].tolist())
+            print(f"Complete sequence alpha: {complete_seqs_alpha}")
             complete_seqs_scores.extend(top_k_scores[complete_inds])
+            print(f"Complete sequence alpha: {complete_seqs_alpha}")
         k -= len(complete_inds)  # reduce beam length accordingly
         print(f"Beam size length: {k}")
 
@@ -145,7 +144,9 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
         if k == 0:
             break
         seqs = seqs[incomplete_inds]
+        print(f"Sequence with imcomplete inds: {seqs}")
         seqs_alpha = seqs_alpha[incomplete_inds]
+        print(f"Squence alpha with imcomplete inds: {seqs_alpha}")
         h = h[prev_word_inds[incomplete_inds]]
         c = c[prev_word_inds[incomplete_inds]]
         encoder_out = encoder_out[prev_word_inds[incomplete_inds]]
