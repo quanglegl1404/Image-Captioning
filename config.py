@@ -42,5 +42,5 @@ class Config(object):
 
     ##model path
     model_dir = "checkpoints/"
-    encoder_path = "./checkpoints/encoder_epoch7-july-21-baseline"
-    decoder_path = "./checkpoints/decoder_epoch7-july-2-baseline"
+    encoder_path = "./checkpoints/encoder_epoch20-july-21-baseline"
+    decoder_path = "./checkpoints/decoder_epoch20-july-2-baseline"
