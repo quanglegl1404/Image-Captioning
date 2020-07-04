@@ -78,8 +78,9 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
 
     # s is a number less than or equal to k, because sequences are removed from this process once they hit <end>
     while True:
-
+        print("enter loop")
         embeddings = decoder.embedding(k_prev_words).squeeze(1)  # (s, embed_dim)
+        print(f"Embeddings: {embeddings}")
 
         awe, alpha = decoder.attention(encoder_out, h)  # (s, encoder_dim), (s, num_pixels)
 
