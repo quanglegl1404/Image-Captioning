@@ -83,9 +83,7 @@ def main():
 
     for index, image_data in enumerate(images):
         try:
-            print("Image path")
             image_path = config.val_img_path + image_data['file_name']
-            print("Load image")
             image = load_image(image_path, transform= transform)
             image_tensor = image.to(device)
 

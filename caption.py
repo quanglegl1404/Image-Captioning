@@ -56,7 +56,9 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
     encoder_out = encoder_out.expand(k, num_pixels, encoder_dim)  # (k, num_pixels, encoder_dim)
 
     # Tensor to store top k previous words at each step; now they're just <start>
+    print("Is suspected?")
     k_prev_words = torch.LongTensor([[word_map['<start>']]] * k).to(device)  # (k, 1)
+    print("Suspect")
 
     # Tensor to store top k sequences; now they're just <start>
     seqs = k_prev_words  # (k, 1)
