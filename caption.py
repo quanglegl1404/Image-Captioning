@@ -150,7 +150,9 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
         c = c[prev_word_inds[incomplete_inds]]
         encoder_out = encoder_out[prev_word_inds[incomplete_inds]]
         top_k_scores = top_k_scores[incomplete_inds].unsqueeze(1)
+        print(f"Top k scores unsqueeze {top_k_scores}")
         k_prev_words = next_word_inds[incomplete_inds].unsqueeze(1)
+        print(f"k prev words unsqueeze {k_prev_words}")
 
         # Break if things have been going on too long
         if step > 50:
