@@ -80,33 +80,45 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
     while True:
         print("enter loop")
         embeddings = decoder.embedding(k_prev_words).squeeze(1)  # (s, embed_dim)
-        print(f"Embeddings: {embeddings}")
 
         awe, alpha = decoder.attention(encoder_out, h)  # (s, encoder_dim), (s, num_pixels)
+        print(f"Attention weight: {awe}")
+        print(f"Alpha {alpha}")
 
         alpha = alpha.view(-1, enc_image_size, enc_image_size)  # (s, enc_image_size, enc_image_size)
 
         gate = decoder.sigmoid(decoder.f_beta(h))  # gating scalar, (s, encoder_dim)
+        print(f"Gate {gate}")
         awe = gate * awe
 
         h, c = decoder.decode_step(torch.cat([embeddings, awe], dim=1), (h, c))  # (s, decoder_dim)
+        print(f"Hidden: {h}")
+        print(f"Cell: {c}")
 
         scores = decoder.fc(h)  # (s, vocab_size)
+        print(f"Scores: {scores}")
         scores = F.log_softmax(scores, dim=1)
+        print(f"Scores after log soft max: {scores}")
 
         # Add
         scores = top_k_scores.expand_as(scores) + scores  # (s, vocab_size)
 
         # For the first step, all k points will have the same scores (since same k previous words, h, c)
         if step == 1:
+            print("step == 1")
             top_k_scores, top_k_words = scores[0].topk(k, 0, True, True)  # (s)
         else:
+            print("step != 1")
             # Unroll and find top scores, and their unrolled indices
             top_k_scores, top_k_words = scores.view(-1).topk(k, 0, True, True)  # (s)
 
         # Convert unrolled indices to actual indices of scores
+        print(f"Top k words: {top_k_words}")
+        
         prev_word_inds = top_k_words / vocab_size  # (s)
+        print(f"prev_word_inds {prev_word_inds}")
         next_word_inds = top_k_words % vocab_size  # (s)
+        print(f"next_word_inds {next_word_inds}")
 
         # Add new words to sequences, alphas
         seqs = torch.cat([seqs[prev_word_inds], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
@@ -116,14 +128,18 @@ def caption_image_beam_search(encoder, decoder, word_map, image, device, beam_si
         # Which sequences are incomplete (didn't reach <end>)?
         incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if
                            next_word != word_map['<end>']]
+        print(f"Incomplete inds: {incomplete_inds}")
         complete_inds = list(set(range(len(next_word_inds))) - set(incomplete_inds))
+        print(f"Len of complete inds: {complete_inds}")
 
         # Set aside complete sequences
         if len(complete_inds) > 0:
+            print("Length of complete inds > 0")
             complete_seqs.extend(seqs[complete_inds].tolist())
             complete_seqs_alpha.extend(seqs_alpha[complete_inds].tolist())
             complete_seqs_scores.extend(top_k_scores[complete_inds])
         k -= len(complete_inds)  # reduce beam length accordingly
+        print(f"Beam size length: {k}")
 
         # Proceed with incomplete sequences
         if k == 0:
