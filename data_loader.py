@@ -80,10 +80,10 @@ def get_loader(method, vocab, batch_size):
     # train/validation paths
     if method == 'train':
         root = './data/train2017_resized'
-        json = './data/annotations/uitviic_captions_train2017.json'
+        json = './data/annotations/captions_train2017.json'
     elif method =='val':
         root = './data/val2017_resized'
-        json = './data/annotations/uitviic_captions_val2017.json'
+        json = './data/annotations/captions_val2017.json'
 
     # rasnet transformation/normalization
     transform = transforms.Compose([
