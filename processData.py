@@ -66,10 +66,10 @@ def build_vocab(json, threshold, tokenizer):
     words = [word for word, cnt in counter.items() if cnt >= threshold]
 
     vocab = Vocabulary()
-    vocab.add_word('<pad>') # 0
+    vocab.add_word('[pad]') # 0
     vocab.add_word('<start>') # 1
     vocab.add_word('<end>') # 2
-    vocab.add_word('<unk>') # 3
+    vocab.add_word('[unk]') # 3
 
     for i, word in enumerate(words):
         vocab.add_word(word)
