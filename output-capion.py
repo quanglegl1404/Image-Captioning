@@ -64,7 +64,7 @@ def main():
 
     #Build models
     encoder = Encoder().eval()  # eval mode (batchnorm uses moving mean/variance)
-    decoder = Decoder(vocab_size=len(vocab),use_glove=False, use_bert=True, vocab=vocab, device=device, BertTokenizer=tokenizer, BertModel=BertModel)
+    decoder = Decoder(vocab_size=len(vocab),use_glove=False, use_bert=config.use_bert, vocab=vocab, device=device, BertTokenizer=tokenizer, BertModel=BertModel)
     encoder = encoder.to(device)
     decoder = decoder.to(device)
 
