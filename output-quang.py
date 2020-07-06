@@ -147,11 +147,10 @@ def main():
                     sampled_caption = []
                     token_list = []
                     for word_id in word_array:
-                        token = tokenizer.convert_ids_to_tokens()
+                        token = vocab.idx2word[word_id]
                         token_list.append(token)
                         # sampled_caption.append(word)
-                    sample_sentence =  tokenizer.convert_tokens_to_string(token_list)   
-                    sentence = ' '.join(sampled_caption)
+                    sentence = ' '.join(token_list)
 
                     print(f"{sentence}")
                     # record = {
