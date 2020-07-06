@@ -11,7 +11,7 @@ class Config(object):
 
     # hyperparams
     grad_clip = 5.
-    num_epochs = 20
+    num_epochs = 25
     batch_size = 32
     decoder_lr = 0.0004
 
