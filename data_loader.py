@@ -86,7 +86,7 @@ def get_loader(method, vocab, batch_size):
         root = './data/train2017_resized'
         json = './data/annotations/captions_train2017.json'
     elif method =='val':
-        root = './data/val2017_resized'
+        root = '/content/drive/My Drive/NLP_image_captioning/Quang/Image-Captioning/data/val2017_resized'
         json = './data/annotations/captions_val2017.json'
 
     # rasnet transformation/normalization
