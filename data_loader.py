@@ -34,6 +34,7 @@ class DataLoader(data.Dataset):
         img_id = coco.anns[ann_id]['image_id']
         #print(f"Image id: {img_id}")
         path = coco.loadImgs(img_id)[0]['file_name']
+        print(f"Full path: {os.path.join(self.root, path)}")
         try:
             ##todo: pass
             image = Image.open(os.path.join(self.root, path)).convert('RGB')
