@@ -40,14 +40,20 @@ class DataLoader(data.Dataset):
             ##todo: pass
             # if os.path.exists(fullPath):
             #     print(f"{fullPath} does exist")
+            print("Before open image")
             image = Image.open(fullPath).convert('RGB')
+            print("After open image")
             if self.transform is not None:
                 image = self.transform(image)
 
             tokens = nltk.tokenize.word_tokenize(str(caption).lower())
             caption = []
             caption.append(vocab('<start>'))
-            caption.extend([vocab(token) for token in tokens])
+            print("Before adding token to caption")
+            for token in tokens:
+                print(f"Token: {token}")
+                caption.extend([token])
+            print("After adding token to vocab")
             caption.append(vocab('<end>'))
             target = torch.Tensor(caption)
 
