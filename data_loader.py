@@ -34,9 +34,13 @@ class DataLoader(data.Dataset):
         img_id = coco.anns[ann_id]['image_id']
         #print(f"Image id: {img_id}")
         path = coco.loadImgs(img_id)[0]['file_name']
+        fullPath = os.path.join(self.root, path);
+        print(f"Full path: {fullPath}")
         try:
             ##todo: pass
-            image = Image.open(os.path.join(self.root, path)).convert('RGB')
+            if os.path.exists(config.model_dir):
+                print(f"{fullPath} does exist")
+            image = Image.open(fullPath).convert('RGB')
             if self.transform is not None:
                 image = self.transform(image)
 
@@ -50,7 +54,7 @@ class DataLoader(data.Dataset):
             return image, target, img_id
 
         except:
-            print(f"Image path: {path}")
+            print(f"Image path: {fullPath}")
             return None, None, None
 
     def __len__(self):
