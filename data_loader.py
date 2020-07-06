@@ -53,7 +53,8 @@ class DataLoader(data.Dataset):
 
             return image, target, img_id
 
-        except:
+        except Exception as e:
+            print(f"Exception: {e}")
             print(f"Image path: {fullPath}")
             return None, None, None
 
