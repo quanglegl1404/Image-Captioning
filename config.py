@@ -2,7 +2,7 @@
 
 class Config(object):
     # Paths
-    caption_path = './data/annotations/captions_train2017.json'
+    caption_path = './data/annotations/captions_train2017_org.json'
     validation_path = './data/annotations/captions_val2017.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'

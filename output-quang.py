@@ -153,12 +153,12 @@ def main():
                     sentence = ' '.join(token_list)
 
                     print(f"{sentence}")
-                    # record = {
-                    #     'image_id': img_id,
-                    #     'caption': sentence,
-                    #     'id': curr_id
-                    # }
-                    # curr_id+=1
+                    record = {
+                        'image_id': img_id,
+                        'caption': sentence,
+                        'id': curr_id
+                    }
+                    curr_id+=1
 
                     # results_data.append(record)
 
