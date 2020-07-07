@@ -51,7 +51,6 @@ class DataLoader(data.Dataset):
             caption.append(vocab('<start>'))
             print("Before adding token to caption")
             for token in tokens:
-                print(f"Token: {token}")
                 caption.extend([token])
             print("After adding token to vocab")
             caption.append(vocab('<end>'))
