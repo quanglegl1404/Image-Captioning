@@ -58,8 +58,7 @@ class DataLoader(data.Dataset):
                 else:
                     try:
                         caption.extend([vocab(token)])
-                    except Exception as ex:
-                        print(ex)
+                    except:
                         print(f"Error extending token {token}")
                         pass
             caption.append(vocab('<end>'))
