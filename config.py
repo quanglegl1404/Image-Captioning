@@ -2,16 +2,17 @@
 
 class Config(object):
     # Paths
-    caption_path = './data/annotations/captions_train2017.json'
-    validation_path = './data/annotations/captions_val2017.json'
+    caption_path = './data/annotations/eng/captions_train2017.json'
+    validation_path = './data/annotations/eng/captions_val2017.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
+    train_img_path = './data/train2017_resized'
     machine_output_path = './data/july_v1_machine_output.json'
     threshold = 1
 
     # hyperparams
     grad_clip = 5.
-    num_epochs = 25
+    num_epochs = 10
     batch_size = 32
     decoder_lr = 0.0004
 

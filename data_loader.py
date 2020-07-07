@@ -16,6 +16,9 @@ import torch.utils.data as data
 from PIL import Image
 from pycocotools.coco import COCO
 from torchvision import transforms
+from config import Config
+
+config = Config()
 
 class DataLoader(data.Dataset):
     def __init__(self, root, json, vocab, transform=None):
@@ -45,11 +48,15 @@ class DataLoader(data.Dataset):
                 image = self.transform(image)
 
             tokens = nltk.tokenize.word_tokenize(str(caption).lower())
-            print("Done tokenizing")
+            #print("Done tokenizing")
             caption = []
             caption.append(vocab('<start>'))
-            print("Start extending caption")
+            #print("Start extending caption")
             for token in tokens:
+<<<<<<< HEAD
+=======
+                #print(f"token: {token}")
+>>>>>>> a7461e6cedbc041fe00145c20a5960eda91a727c
                 if token == '<unk>':
                     caption.extend([vocab['[UNK]']])
                 else:
@@ -94,11 +101,11 @@ def get_loader(method, vocab, batch_size):
 
     # train/validation paths
     if method == 'train':
-        root = './data/train2017_resized'
-        json = './data/annotations/captions_train2017.json'
+        root = config.train_img_path
+        json = config.caption_path
     elif method =='val':
         root = '../../Images/resized2017'
-        json = './data/annotations/captions_val2017.json'
+        json = config.validation_path
 
     # rasnet transformation/normalization
     transform = transforms.Compose([
