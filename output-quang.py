@@ -166,8 +166,8 @@ def main():
             print(e)
             pass
 
-    # with open(config.machine_output_path, 'w+') as f_results:
-    #     f_results.write(json.dumps(results_data, ensure_ascii=False))
+    with open(config.machine_output_path, 'w+') as f_results:
+        f_results.write(json.dumps(results_data, ensure_ascii=False))
     print("Finished")
     #         sampled_caption = []
 

@@ -53,10 +53,6 @@ class DataLoader(data.Dataset):
             caption.append(vocab('<start>'))
             #print("Start extending caption")
             for token in tokens:
-<<<<<<< HEAD
-=======
-                #print(f"token: {token}")
->>>>>>> a7461e6cedbc041fe00145c20a5960eda91a727c
                 if token == '<unk>':
                     caption.extend([vocab['[UNK]']])
                 else:

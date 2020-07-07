@@ -7,7 +7,7 @@ class Config(object):
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
-    machine_output_path = './data/july_v1_machine_output.json'
+    machine_output_path = './data/july_7_v1_machine_output.json'
     threshold = 1
 
     # hyperparams
