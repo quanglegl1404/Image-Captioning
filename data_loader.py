@@ -45,9 +45,20 @@ class DataLoader(data.Dataset):
                 image = self.transform(image)
 
             tokens = nltk.tokenize.word_tokenize(str(caption).lower())
+            print("Done tokenizing")
             caption = []
             caption.append(vocab('<start>'))
-            caption.extend([vocab(token) for token in tokens])
+            print("Start extending caption")
+            for token in tokens:
+                print(f"token: {token}")
+                if token == '<unk>':
+                    caption.extend([vocab['[UNK]']])
+                else:
+                    try:
+                        caption.extend([vocab(token)])
+                    except:
+                        print(f"Error extending token {token}")
+                        pass
             caption.append(vocab('<end>'))
             target = torch.Tensor(caption)
 
