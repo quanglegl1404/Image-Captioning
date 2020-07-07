@@ -128,8 +128,8 @@ def main():
 
     # print("done resizing images...")
 
-caption_path = './data/annotations/uitviic_captions_val2017.json'
+#caption_path = './data/annotations/uitviic_captions_val2017.json'
 vocab_path = './data/vocab.pkl'
 threshold = 1
 
-main()
+#main()
