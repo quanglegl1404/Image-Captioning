@@ -57,7 +57,7 @@ class DataLoader(data.Dataset):
                     caption.extend([vocab['[UNK]']])
                 else:
                     try:
-                        caption.extend([vocab.word2idx(token)])
+                        caption.extend([vocab(token)])
                     except Exception as ex:
                         print(ex)
                         print(f"Error extending token {token}")
