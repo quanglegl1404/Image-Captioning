@@ -135,9 +135,10 @@ class Decoder(nn.Module):
                     cap_idx.append(self.config.PAD)
                     
                 cap = ' '.join([self.vocab.idx2word[word_idx.item()] for word_idx in cap_idx])
+                print(f"Cap: {cap}")
                 cap = u'[CLS] '+cap
 
-                tokenized_cap = tokenizer.tokenize(cap)      
+                tokenized_cap = tokenizer.tokenize(cap.lower())      
                 indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_cap)
                 tokens_tensor = torch.tensor([indexed_tokens]).to(self.device)
 
