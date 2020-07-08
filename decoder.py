@@ -123,7 +123,6 @@ class Decoder(nn.Module):
         num_pixels = encoder_out.size(1)
         tokenizer = self.BertTokenizer
         # tokenizer = self.BertTokenizer.from_pretrained('bert-base-multilingual-cased', do_lower_case = True, strip_accents=False)
-
         # load bert or regular embeddings
         if not self.use_bert:
             embeddings = self.embedding(encoded_captions)
@@ -137,58 +136,51 @@ class Decoder(nn.Module):
                     
                 cap = ' '.join([self.vocab.idx2word[word_idx.item()] for word_idx in cap_idx])
                 cap = u'[CLS] '+cap
-                #print(f"Caption: {cap}")
-                
-                #print(f"Cap idx:{cap_idx}")
-                tokenized_cap = tokenizer.tokenize(cap)
-                #print(f"Tokenized cap: {tokenized_cap}")
-                #print(f"Tokenized cap: {tokenized_cap}")          
+
+                tokenized_cap = tokenizer.tokenize(cap)      
                 indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_cap)
-                #print(f"Indexed tokens: {indexed_tokens}")
                 tokens_tensor = torch.tensor([indexed_tokens]).to(self.device)
 
                 with torch.no_grad():
                     encoded_layers, _ = self.BertModel(tokens_tensor)
 
                 bert_embedding = encoded_layers[-1].squeeze(0)
-                #print(f"Bert embedding: {bert_embedding}")
                 
                 split_cap = cap.split()
                 tokens_embedding = []
                 j = 0
-
-                for full_token in split_cap:
-                    #print(f"Full token: {full_token}")
-                    curr_token = ''
-                    x = 0
-                    for i,_ in enumerate(tokenized_cap[1:]): # disregard CLS
-                        token = tokenized_cap[i+j]
-                        piece_embedding = bert_embedding[i+j]
-                        
-                        # full token
-                        if token == full_token and curr_token == '' :
-                            tokens_embedding.append(piece_embedding)
-                            j += 1
-                            break
-                        else: # partial token
-                            x += 1
+                try:
+                    for full_token in split_cap:
+                        curr_token = ''
+                        x = 0
+                        for i,_ in enumerate(tokenized_cap[1:]): # disregard CLS
+                            token = tokenized_cap[i+j]
+                            piece_embedding = bert_embedding[i+j]
                             
-                            if curr_token == '':
+                            # full token
+                            if token == full_token and curr_token == '' :
                                 tokens_embedding.append(piece_embedding)
-                                curr_token += token.replace('#', '')
-                            else:
-                                tokens_embedding[-1] = torch.add(tokens_embedding[-1], piece_embedding)
-                                curr_token += token.replace('#', '')
+                                j += 1
+                                break
+                            else: # partial token
+                                x += 1
                                 
-                                if curr_token == full_token: # end of partial
-                                    j += x
-                                    break                            
-
-                #print(tokens_embedding)
+                                if curr_token == '':
+                                    tokens_embedding.append(piece_embedding)
+                                    curr_token += token.replace('#', '')
+                                else:
+                                    tokens_embedding[-1] = torch.add(tokens_embedding[-1], piece_embedding)
+                                    curr_token += token.replace('#', '')
+                                    
+                                    if curr_token == full_token: # end of partial
+                                        j += x
+                                        break
+                except Exception as ex:
+                    print(f"Exception for token: {curr_token}")
+                    pass                       
                 cap_embedding = torch.stack(tokens_embedding)
-                #print(f"Cap embedding: {cap_embedding}")
                 embeddings.append(cap_embedding)
-                #print(f"Embeddings before stack: {embeddings}")
+
   
             embeddings = torch.stack(embeddings)
             #print(f"Embeddings after stack: {embeddings}")
