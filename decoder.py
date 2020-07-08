@@ -135,7 +135,7 @@ class Decoder(nn.Module):
                     cap_idx.append(self.config.PAD)
                     
                 cap = ' '.join([self.vocab.idx2word[word_idx.item()] for word_idx in cap_idx])
-                print(f"Cap: {cap}")
+                #print(f"Cap: {cap}")
                 cap = u'[CLS] '+cap
 
                 tokenized_cap = tokenizer.tokenize(cap.lower())      
