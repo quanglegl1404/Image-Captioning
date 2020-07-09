@@ -160,7 +160,7 @@ def main():
                     }
                     curr_id+=1
 
-                    # results_data.append(record)
+                    results_data.append(record)
 
         except Exception as e:
             print(e)
