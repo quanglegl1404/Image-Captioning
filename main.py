@@ -146,6 +146,8 @@ def train():
         min_losses = 5.0
         for i, (imgs, caps, caplens, _) in enumerate(tqdm(train_loader)):
 
+            if imgs == None:
+                continue
             # if not imgs or not caps or not caplens:
             #     continue
 
