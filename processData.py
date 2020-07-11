@@ -60,7 +60,7 @@ def build_vocab(json, threshold, tokenizer):
 
         #counter.update(tokens)
 
-        if (i+1) % 1000 == 0:
+        if (i+1) % 100000 == 0:
             print(f"[{i+1}/{len(ids)}] Tokenized the captions.")
     # ommit non-frequent words
     words = [word for word, cnt in counter.items() if cnt >= threshold]

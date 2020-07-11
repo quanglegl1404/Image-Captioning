@@ -71,8 +71,8 @@ class DataLoader(data.Dataset):
 
             return image, target, img_id
 
-        except:
-            print(f"Image path: {url}")
+        except Exception as ex:
+            print(f"Image path: {url}, {ex}")
             return None, None, None
 
     def __len__(self):
