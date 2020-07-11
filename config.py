@@ -2,8 +2,8 @@
 
 class Config(object):
     # Paths
-    caption_path = './data/annotations/captions_train2017.json'
-    validation_path = './data/annotations/captions_val2017.json'
+    caption_path = './data/annotations/captions_train2017_org.json'
+    validation_path = './data/annotations/uitviic_val2017_org.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
@@ -12,7 +12,7 @@ class Config(object):
 
     # hyperparams
     grad_clip = 5.
-    num_epochs = 5
+    num_epochs = 40
     batch_size = 32
     decoder_lr = 0.0004
 
