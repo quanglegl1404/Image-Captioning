@@ -85,7 +85,7 @@ def collate_fn(data):
         return
 
     data.sort(key=lambda  x: len(x[1]), reverse=True)
-    print(data)
+    #print(data)
     images, captions, img_ids = zip(*data)
 
     images = torch.stack(images, 0)
