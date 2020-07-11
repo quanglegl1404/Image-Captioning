@@ -55,7 +55,7 @@ class DataLoader(data.Dataset):
         url = coco.imgs[img_id]['coco_url']
         try:
             #todo: pass
-            respone = requests.get(str(url))
+            response = requests.get(str(url))
             image = Image.open(BytesIO(response.content))
             image = resize_image(image)
             #print(f'Debug: {image}')
