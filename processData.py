@@ -132,4 +132,4 @@ def main():
 vocab_path = './data/vocab.pkl'
 threshold = 1
 
-main()
+#main()

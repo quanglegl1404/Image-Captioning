@@ -144,99 +144,104 @@ def train():
         num_batches = len(train_loader)
 
         min_losses = 5.0
-        for i, (imgs, caps, caplens, _) in enumerate(tqdm(train_loader)):
+        try:
+            for i, (imgs, caps, caplens, _) in enumerate(tqdm(train_loader)):
 
-            if imgs == None:
-                continue
-            # if not imgs or not caps or not caplens:
-            #     continue
+                if imgs == None:
+                    print('Skip none')
+                    continue
+                # if not imgs or not caps or not caplens:
+                #     continue
 
-            imgs = encoder(imgs.to(device))
-            caps = caps.to(device)
+                imgs = encoder(imgs.to(device))
+                caps = caps.to(device)
 
-            scores, caps_sorted, decode_lengths, alphas = decoder(imgs, caps, caplens)
-            scores = pack_padded_sequence(scores, decode_lengths, batch_first=True)[0]
+                scores, caps_sorted, decode_lengths, alphas = decoder(imgs, caps, caplens)
+                scores = pack_padded_sequence(scores, decode_lengths, batch_first=True)[0]
 
-            targets = caps_sorted[:, 1:]
-            #print(f"Targets: {target}")
-            targets = pack_padded_sequence(targets, decode_lengths, batch_first=True)[0]
+                targets = caps_sorted[:, 1:]
+                #print(f"Targets: {target}")
+                targets = pack_padded_sequence(targets, decode_lengths, batch_first=True)[0]
 
-            loss = criterion(scores, targets).to(device)
+                loss = criterion(scores, targets).to(device)
 
-            loss += ((1. - alphas.sum(dim=1)) ** 2).mean()
+                loss += ((1. - alphas.sum(dim=1)) ** 2).mean()
 
-            #decoder.zero_grad()
-            #encoder.zero_grad()
-            decoder_optimizer.zero_grad()
-            if encoder_optimizer is not None:
-              encoder_optimizer.zero_grad()
-            loss.backward()
+                #decoder.zero_grad()
+                #encoder.zero_grad()
+                decoder_optimizer.zero_grad()
+                if encoder_optimizer is not None:
+                    encoder_optimizer.zero_grad()
+                loss.backward()
 
-            # grad_clip decoder
-            for group in decoder_optimizer.param_groups:
-                for param in group['params']:
-                    if param.grad is not None:
-                        param.grad.data.clamp_(-grad_clip, grad_clip)
+                # grad_clip decoder
+                for group in decoder_optimizer.param_groups:
+                    for param in group['params']:
+                        if param.grad is not None:
+                            param.grad.data.clamp_(-grad_clip, grad_clip)
 
-            decoder_optimizer.step()
-            if encoder_optimizer is not None:
-              encoder_optimizer.step()
-            losses.update(loss.item(), sum(decode_lengths))
+                decoder_optimizer.step()
+                if encoder_optimizer is not None:
+                    encoder_optimizer.step()
+                losses.update(loss.item(), sum(decode_lengths))
 
-            # save model each 100 batches
-            if i%50==0 and i!=0:
-                print('epoch '+str(epoch+1)+'/60 ,Batch '+str(i)+'/'+str(num_batches)+' loss: '+str(losses.avg))
-                # if(losses.avg < min_losses):
-                #   min_losses = losses.avg
-                #   print('saving min_losses...')
-                #   torch.save({
-                #     'epoch': epoch,
-                #     'model_state_dict': decoder.state_dict(),
-                #     'optimizer_state_dict': decoder_optimizer.state_dict(),
-                #     'loss': loss,
-                #   }, './checkpoints/june12/decoder_min')
-                  
-                #   torch.save({
-                #     'epoch': epoch,
-                #     'model_state_dict': encoder.state_dict(),
-                #     'loss': loss,
-                #     }, './checkpoints/june12/encoder_min')
-                 # adjust learning rate (create condition for this)
-                for param_group in decoder_optimizer.param_groups:
-                    param_group['lr'] = param_group['lr'] * 0.8
+                # save model each 100 batches
+                if i%50==0 and i!=0:
+                    print('epoch '+str(epoch+1)+'/60 ,Batch '+str(i)+'/'+str(num_batches)+' loss: '+str(losses.avg))
+                    # if(losses.avg < min_losses):
+                    #   min_losses = losses.avg
+                    #   print('saving min_losses...')
+                    #   torch.save({
+                    #     'epoch': epoch,
+                    #     'model_state_dict': decoder.state_dict(),
+                    #     'optimizer_state_dict': decoder_optimizer.state_dict(),
+                    #     'loss': loss,
+                    #   }, './checkpoints/june12/decoder_min')
+                        
+                    #   torch.save({
+                    #     'epoch': epoch,
+                    #     'model_state_dict': encoder.state_dict(),
+                    #     'loss': loss,
+                    #     }, './checkpoints/june12/encoder_min')
+                        # adjust learning rate (create condition for this)
+                    for param_group in decoder_optimizer.param_groups:
+                        param_group['lr'] = param_group['lr'] * 0.8
 
-                #print(f'saving model...')
+                    #print(f'saving model...')
 
-        #print(f"min losses: {min_losses}")
-                # torch.save({
-                #     'epoch': epoch,
-                #     'model_state_dict': decoder.state_dict(),
-                #     'optimizer_state_dict': decoder_optimizer.state_dict(),
-                #     'loss': loss,
-                #     }, './checkpoints/june11/decoder_mid')
+            #print(f"min losses: {min_losses}")
+                    # torch.save({
+                    #     'epoch': epoch,
+                    #     'model_state_dict': decoder.state_dict(),
+                    #     'optimizer_state_dict': decoder_optimizer.state_dict(),
+                    #     'loss': loss,
+                    #     }, './checkpoints/june11/decoder_mid')
 
-                # torch.save({
-                #     'epoch': epoch,
-                #     'model_state_dict': encoder.state_dict(),
-                #     'loss': loss,
-                #     }, './checkpoints/june11/encoder_mid')
+                    # torch.save({
+                    #     'epoch': epoch,
+                    #     'model_state_dict': encoder.state_dict(),
+                    #     'loss': loss,
+                    #     }, './checkpoints/june11/encoder_mid')
 
-                # print('model saved')
-        print(f'Loss: {loss}')
-        torch.save({
-            'epoch': epoch,
-            'model_state_dict': decoder.state_dict(),
-            'optimizer_state_dict': decoder_optimizer.state_dict(),
-            'loss': loss,
-            }, './checkpoints/decoder_epoch'+str(epoch+1)+'_july_10_eng_bert')
+                    # print('model saved')
+            print(f'Loss: {loss}')
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': decoder.state_dict(),
+                'optimizer_state_dict': decoder_optimizer.state_dict(),
+                'loss': loss,
+                }, './checkpoints/decoder_epoch'+str(epoch+1)+'_july_10_eng_bert')
 
-        torch.save({
-            'epoch': epoch,
-            'model_state_dict': encoder.state_dict(),
-            'loss': loss,
-            }, './checkpoints/encoder_epoch'+str(epoch+1)+'_july_10_eng_bert')
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': encoder.state_dict(),
+                'loss': loss,
+                }, './checkpoints/encoder_epoch'+str(epoch+1)+'_july_10_eng_bert')
 
-        print('epoch checkpoint saved')
+            print('epoch checkpoint saved')
+        except Exception as ex:
+            print(ex)
+            pass
 
     print("Completed training...")  
 
