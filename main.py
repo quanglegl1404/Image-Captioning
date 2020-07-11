@@ -16,7 +16,7 @@ import _pickle as pickle
 import torch.nn as nn
 import torch
 from torch.nn.utils.rnn import pack_padded_sequence
-from data_loader import get_loader
+#from data_loader import get_loader
 from nltk.translate.bleu_score import corpus_bleu
 from processData import Vocabulary
 from tqdm import tqdm
@@ -40,6 +40,7 @@ from decoder import Decoder
 from config import Config
 #from utils import load_checkpoints
 import os
+from online_data_loader import get_loader
 
 ###################
 # START Parameters
