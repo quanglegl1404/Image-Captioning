@@ -2,12 +2,12 @@
 
 class Config(object):
     # Paths
-    caption_path = './data/annotations/captions_train2017_org.json'
-    validation_path = './data/annotations/uitviic_val2017_org.json'
+    caption_path = './data/annotations/eng/captions_val2017.json'
+    validation_path = './data/annotations/eng/uitviic_val2017_org.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
-    machine_output_path = './data/july_9_v1_machine_output.json'
+    machine_output_path = './data/july_10_v1_machine_output.json'
     threshold = 1
 
     # hyperparams
