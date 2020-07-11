@@ -56,7 +56,7 @@ class DataLoader(data.Dataset):
         try:
             #todo: pass
             response = requests.get(str(url))
-            image = Image.open(BytesIO(response.content))
+            image = Image.open(BytesIO(response.content)).convert('RGB')
             image = resize_image(image)
             #print(f'Debug: {image}')
             if self.transform is not None:
