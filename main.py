@@ -225,22 +225,20 @@ def train():
 
                     # print('model saved')
             print(f'Loss: {loss}')
-            if epoch > 28:
-                print("Saving checkpoints")
-                torch.save({
-                    'epoch': epoch,
-                    'model_state_dict': decoder.state_dict(),
-                    'optimizer_state_dict': decoder_optimizer.state_dict(),
-                    'loss': loss,
-                    }, './checkpoints/decoder_epoch'+str(epoch+1)+'_july_10_bert')
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': decoder.state_dict(),
+                'optimizer_state_dict': decoder_optimizer.state_dict(),
+                'loss': loss,
+                }, './checkpoints/decoder_epoch'+str(epoch+1)+'_july_10_bert')
 
-                torch.save({
-                    'epoch': epoch,
-                    'model_state_dict': encoder.state_dict(),
-                    'loss': loss,
-                    }, './checkpoints/encoder_epoch'+str(epoch+1)+'_july_10_bert')
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': encoder.state_dict(),
+                'loss': loss,
+                }, './checkpoints/encoder_epoch'+str(epoch+1)+'_july_10_bert')
 
-                print('epoch checkpoint saved')
+            print('epoch checkpoint saved')
         except Exception as ex:
             print(ex)
             pass
