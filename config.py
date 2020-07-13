@@ -7,7 +7,7 @@ class Config(object):
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
-    machine_output_path = './data/july_13_v1_machine_output_bert_30.json'
+    machine_output_path = './data/july_13_v1_machine_output_bert_40.json'
     threshold = 1
 
     # hyperparams
@@ -43,5 +43,5 @@ class Config(object):
 
     ##model path
     model_dir = "checkpoints/"
-    encoder_path = "./checkpoints/july12/decoder_epoch30_july_10_bert"
-    decoder_path = "./checkpoints/july12/encoder_epoch30_july_10_bert"
+    encoder_path = "./checkpoints/july12/decoder_epoch40_july_10_bert"
+    decoder_path = "./checkpoints/july12/encoder_epoch40_july_10_bert"
