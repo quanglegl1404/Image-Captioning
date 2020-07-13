@@ -100,7 +100,7 @@ def get_loader(method, vocab, batch_size):
         root = config.train_img_path
         json = config.caption_path
     elif method =='val':
-        root = '../../Images/resized2017'
+        root = config.val_img_path #'../../Images/resized2017'
         json = config.validation_path
 
     # rasnet transformation/normalization
