@@ -225,18 +225,8 @@ def train():
 
                     # print('model saved')
             print(f'Loss: {loss}')
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': decoder.state_dict(),
-                'optimizer_state_dict': decoder_optimizer.state_dict(),
-                'loss': loss,
-                }, './checkpoints/decoder_epoch'+str(epoch+1)+'_july_15_vie_bert')
-
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': encoder.state_dict(),
-                'loss': loss,
-                }, './checkpoints/encoder_epoch'+str(epoch+1)+'_july_15_vie_bert')
+            torch.save(decoder.state_dict(),'./checkpoints/decoder_'+str(epoch+1)+'_july_15_vie_bert.ckpt')
+            torch.save(decoder.state_dict(),'./checkpoints/encoder_'+str(epoch+1)+'_july_15_vie_bert.ckpt')
 
             print('epoch checkpoint saved')
         except Exception as ex:
