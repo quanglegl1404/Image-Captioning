@@ -18,7 +18,7 @@ class Config(object):
 
     # if both are false them model = baseline
     glove_model = False
-    bert_model = True
+    bert_model = False
 
     from_checkpoint = False
     train_model = True
