@@ -128,7 +128,7 @@ def main():
 
     print("Valdation file loaded")
 
-    for epoch in tqdm(range(5)):
+    for epoch in tqdm(range(20)):
         results_data = []
         results_img = set()
         curr_id = 0
