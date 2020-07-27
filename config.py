@@ -43,5 +43,5 @@ class Config(object):
 
     ##model path
     model_dir = "checkpoints/"
-    encoder_path = "./checkpoints/july22_eng_base/encoder_20_july_22_eng_bert.ckpt"
-    decoder_path = "./checkpoints/july22_eng_base/decoder_20_july_22_eng_bert.ckpt"
+    encoder_path = "./checkpoints/encoder_20_july_22_eng_bert.ckpt"
+    decoder_path = "./checkpoints/decoder_20_july_22_eng_bert.ckpt"
