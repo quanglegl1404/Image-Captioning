@@ -7,7 +7,7 @@ class Config(object):
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
-    machine_output_path = './data/july_27_v1_machine_output_vie_bert_20.json'
+    machine_output_path = './data/july_27_v2_machine_output_vie_base_20.json'
     threshold = 1
 
     # hyperparams
@@ -18,7 +18,7 @@ class Config(object):
 
     # if both are false them model = baseline
     glove_model = False
-    bert_model = True
+    bert_model = False
 
     from_checkpoint = False
     train_model = True
@@ -43,5 +43,5 @@ class Config(object):
 
     ##model path
     model_dir = "checkpoints/"
-    encoder_path = "./checkpoints/july20_vie_bert/encoder_23_july_15_vie_bert.ckpt"
-    decoder_path = "./checkpoints/july20_vie_bert/decoder_23_july_20_vie_bert.ckpt"
+    encoder_path = "./checkpoints/july21_vie_baseline/encoder_20_july_20_vie_base.ckpt"
+    decoder_path = "./checkpoints/july21_vie_baseline/decoder_20_july_20_vie_base.ckpt"
