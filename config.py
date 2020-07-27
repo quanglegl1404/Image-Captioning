@@ -2,12 +2,12 @@
 
 class Config(object):
     # Paths
-    caption_path = './data/annotations/eng/captions_train2017.json'
-    validation_path = './data/annotations/eng/captions_val2017.json'
+    caption_path = './data/annotations/captions_train2017_org.json'
+    validation_path = './data/annotations/uitviic_val2017_org.json'
     vocab_path = './data/vocab.pkl'
     val_img_path = './data/val2017_resized/'
     train_img_path = './data/train2017_resized'
-    machine_output_path = './data/july_27_v4_machine_output_eng_base.json'
+    machine_output_path = './data/july_27_v5_machine_output_vie_bert'
     threshold = 1
 
     # hyperparams
@@ -43,5 +43,5 @@ class Config(object):
 
     ##model path
     model_dir = "checkpoints/"
-    encoder_path = "./checkpoints/encoder_20_july_22_eng_bert.ckpt"
-    decoder_path = "./checkpoints/decoder_20_july_22_eng_bert.ckpt"
+    encoder_path = "./checkpoints/july20_vie_bert/encoder_16_july_15_vie_bert.ckpt"
+    decoder_path = "./checkpoints/july20_vie_bert/decoder_16_july_20_vie_bert.ckpt"
