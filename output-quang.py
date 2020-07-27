@@ -127,10 +127,11 @@ def main():
     images = get_val_images(config.validation_path)
 
     print("Valdation file loaded")
-    results_data = []
-    results_img = set()
-    curr_id = 0
+
     for epoch in tqdm(range(5)):
+        results_data = []
+        results_img = set()
+        curr_id = 0
         for i, (imgs, caps, caplens, ids) in enumerate(tqdm(val_loader)):
             try:
                 #image_path = config.val_img_path + imgs['file_name']
