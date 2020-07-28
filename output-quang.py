@@ -167,7 +167,7 @@ def main():
             print(e)
             pass
 
-    with open(config.machine_output_path+str(epoch)+'.json', 'w+') as f_results:
+    with open(config.machine_output_path, 'w+') as f_results:
         f_results.write(json.dumps(results_data, ensure_ascii=False))
     
     print("Finished")
