@@ -10,7 +10,7 @@ class Encoder(nn.Module):
         super(Encoder, self).__init__()
         #resnet = models.resnet152(pretrained=True)
         resnet = models.resnet101(pretrained=True)
-        self.resnet = nn.Sequential(*list(resnet.children())[:-1])
+        self.resnet = nn.Sequential(*list(resnet.children())[:-2])
         self.adaptive_pool = nn.AdaptiveAvgPool2d((14, 14))
 
     def forward(self, images):
