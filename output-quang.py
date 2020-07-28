@@ -84,7 +84,7 @@ def sample(i, imgs, caps, caplens, decoder, encoder):
     losses.update(loss.item(), sum(decode_lengths))
 
     # Hypotheses
-    _, preds = torch.max(scores, dim=2)
+    _, preds = torch.max(scores, dim=1)
     preds = preds.tolist()
     temp_preds = list()
     for j, p in enumerate(preds):
@@ -128,48 +128,47 @@ def main():
 
     print("Valdation file loaded")
 
-    for epoch in tqdm(range(20)):
-        results_data = []
-        results_img = set()
-        curr_id = 0
-        for i, (imgs, caps, caplens, ids) in enumerate(tqdm(val_loader)):
-            try:
-                #image_path = config.val_img_path + imgs['file_name']
-                #image = load_image(image_path, transform)
-                #image_tensor = image.to(device)
+    results_data = []
+    results_img = set()
+    curr_id = 0
+    for i, (imgs, caps, caplens, ids) in enumerate(tqdm(val_loader)):
+        try:
+            #image_path = config.val_img_path + imgs['file_name']
+            #image = load_image(image_path, transform)
+            #image_tensor = image.to(device)
 
-                # Generate an caption from the image
-                sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
-                #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
+            # Generate an caption from the image
+            sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
+            #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
-                for j, word_array in enumerate(sampled_ids):
-                    img_id = ids[j]
-                    if img_id not in results_img:
-                        results_img.add(img_id)
-                        sampled_caption = []
-                        token_list = []
-                        for word_id in word_array:
-                            token = vocab.idx2word[word_id]
-                            token_list.append(token)
-                            # sampled_caption.append(word)
-                        sentence = ' '.join(token_list)
+            for j, word_array in enumerate(sampled_ids):
+                img_id = ids[j]
+                if img_id not in results_img:
+                    results_img.add(img_id)
+                    sampled_caption = []
+                    token_list = []
+                    for word_id in word_array:
+                        token = vocab.idx2word[word_id]
+                        token_list.append(token)
+                        # sampled_caption.append(word)
+                    sentence = ' '.join(token_list)
 
-                        print(f"{sentence}")
-                        record = {
-                            'image_id': img_id,
-                            'caption': sentence,
-                            'id': curr_id
-                        }
-                        curr_id+=1
+                    print(f"{sentence}")
+                    record = {
+                        'image_id': img_id,
+                        'caption': sentence,
+                        'id': curr_id
+                    }
+                    curr_id+=1
 
-                        results_data.append(record)
+                    results_data.append(record)
 
-            except Exception as e:
-                print(e)
-                pass
+        except Exception as e:
+            print(e)
+            pass
 
-        with open(config.machine_output_path+str(epoch)+'.json', 'w+') as f_results:
-            f_results.write(json.dumps(results_data, ensure_ascii=False))
+    with open(config.machine_output_path+str(epoch)+'.json', 'w+') as f_results:
+        f_results.write(json.dumps(results_data, ensure_ascii=False))
     
     print("Finished")
     #         sampled_caption = []

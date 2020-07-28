@@ -131,8 +131,8 @@ class Decoder(nn.Module):
             for cap_idx in  encoded_captions:
                 
                 # padd caption to correct size
-                while len(cap_idx) < max_dec_len:
-                    cap_idx.append(self.config.PAD)
+                # while len(cap_idx) < max_dec_len:
+                #     cap_idx.append(self.config.PAD)
                     
                 cap = ' '.join([self.vocab.idx2word[word_idx.item()] for word_idx in cap_idx])
                 #print(f"Cap: {cap}")
