@@ -84,7 +84,7 @@ def sample(i, imgs, caps, caplens, decoder, encoder):
     losses.update(loss.item(), sum(decode_lengths))
 
     # Hypotheses
-    _, preds = torch.max(scores, dim=1)
+    _, preds = torch.max(scores, dim=3)
     preds = preds.tolist()
     temp_preds = list()
     for j, p in enumerate(preds):
