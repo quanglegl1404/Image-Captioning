@@ -148,9 +148,7 @@ def main():
                     results_img.add(img_id)
                     sampled_caption = []
                     token_list = []
-                    print(f"word array: {word_array}")
                     word_array = [i[0] for i in groupby(word_array)]
-                    print(f"after remove: {word_array}")
                     for word_id in word_array:
                         token = vocab.idx2word[word_id]
                         token_list.append(token)
