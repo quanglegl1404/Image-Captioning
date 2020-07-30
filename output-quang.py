@@ -140,7 +140,9 @@ def main():
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
+            print(f"sampled ids: {sampled_ids}")
             sampled_ids = [i[0] for i in groupby(sampled_ids)]
+            print(f"after removing: {sampled_ids}")
             #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
             for j, word_array in enumerate(sampled_ids):
