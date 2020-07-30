@@ -72,29 +72,32 @@ def sample(i, imgs, caps, caplens, decoder, encoder):
     imgs = encoder(imgs.to(device))
     caps = caps.to(device)
 
-    scores, caps_sorted, decode_lengths, alphas = decoder(imgs, caps, caplens)
-    targets = caps_sorted[:, 1:]
+    seq, _ = decoder.sample(imgs)
+    return seq
 
-    # Remove timesteps that we didn't decode at, or are pads
-    scores_packed = pack_padded_sequence(scores, decode_lengths, batch_first=True)[0]
-    targets_packed = pack_padded_sequence(targets, decode_lengths, batch_first=True)[0]
+    # scores, caps_sorted, decode_lengths, alphas = decoder(imgs, caps, caplens)
+    # targets = caps_sorted[:, 1:]
 
-    # Calculate loss
-    loss = criterion(scores_packed, targets_packed)
-    loss += ((1. - alphas.sum(dim=1)) ** 2).mean()
-    losses.update(loss.item(), sum(decode_lengths))
+    # # Remove timesteps that we didn't decode at, or are pads
+    # scores_packed = pack_padded_sequence(scores, decode_lengths, batch_first=True)[0]
+    # targets_packed = pack_padded_sequence(targets, decode_lengths, batch_first=True)[0]
 
-    # Hypotheses
-    _, preds = torch.max(scores, dim=2)
-    preds = preds.tolist()
-    temp_preds = list()
-    for j, p in enumerate(preds):
-        pred = p[:decode_lengths[j]]
-        pred = [w for w in pred if w not in [config.PAD, config.START, config.END]]
-        temp_preds.append(pred)  # remove pads, start, and end
-    preds = temp_preds
+    # # Calculate loss
+    # loss = criterion(scores_packed, targets_packed)
+    # loss += ((1. - alphas.sum(dim=1)) ** 2).mean()
+    # losses.update(loss.item(), sum(decode_lengths))
+
+    # # Hypotheses
+    # _, preds = torch.max(scores, dim=2)
+    # preds = preds.tolist()
+    # temp_preds = list()
+    # for j, p in enumerate(preds):
+    #     pred = p[:decode_lengths[j]]
+    #     pred = [w for w in pred if w not in [config.PAD, config.START, config.END]]
+    #     temp_preds.append(pred)  # remove pads, start, and end
+    # preds = temp_preds
     
-    return preds
+    # return preds
 
 def main():
     print("Initializing...")
@@ -140,37 +143,38 @@ def main():
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
+            print(sampled_ids)
             #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
-            for j, word_array in enumerate(sampled_ids):
-                img_id = ids[j]
-                if img_id not in results_img:
-                    results_img.add(img_id)
-                    sampled_caption = []
-                    token_list = []
-                    word_array = [i[0] for i in groupby(word_array)]
-                    for word_id in word_array:
-                        token = vocab.idx2word[word_id]
-                        token_list.append(token)
-                        # sampled_caption.append(word)
-                    sentence = ' '.join(token_list)
+            # for j, word_array in enumerate(sampled_ids):
+            #     img_id = ids[j]
+            #     if img_id not in results_img:
+            #         results_img.add(img_id)
+            #         sampled_caption = []
+            #         token_list = []
+            #         word_array = [i[0] for i in groupby(word_array)]
+            #         for word_id in word_array:
+            #             token = vocab.idx2word[word_id]
+            #             token_list.append(token)
+            #             # sampled_caption.append(word)
+            #         sentence = ' '.join(token_list)
 
-                    print(f"{sentence}")
-                    record = {
-                        'image_id': img_id,
-                        'caption': sentence,
-                        'id': curr_id
-                    }
-                    curr_id+=1
+            #         print(f"{sentence}")
+            #         record = {
+            #             'image_id': img_id,
+            #             'caption': sentence,
+            #             'id': curr_id
+            #         }
+            #         curr_id+=1
 
-                    results_data.append(record)
+            #         results_data.append(record)
 
         except Exception as e:
             print(e)
             pass
 
-    with open(config.machine_output_path, 'w+') as f_results:
-        f_results.write(json.dumps(results_data, ensure_ascii=False))
+    # with open(config.machine_output_path, 'w+') as f_results:
+    #     f_results.write(json.dumps(results_data, ensure_ascii=False))
     
     print("Finished")
     #         sampled_caption = []
