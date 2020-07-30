@@ -140,9 +140,6 @@ def main():
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
-            print(f"sampled ids: {sampled_ids}")
-            sampled_ids = [i[0] for i in groupby(sampled_ids)]
-            print(f"after removing: {sampled_ids}")
             #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
             for j, word_array in enumerate(sampled_ids):
@@ -151,6 +148,9 @@ def main():
                     results_img.add(img_id)
                     sampled_caption = []
                     token_list = []
+                    print(f"word array: {word_array}")
+                    word_array = [i[0] for i in groupby(word_array)]
+                    print(f"after remove: {word_array}")
                     for word_id in word_array:
                         token = vocab.idx2word[word_id]
                         token_list.append(token)
