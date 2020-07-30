@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import pickle 
 import os
+from itertools import groupby 
 
 import torch.nn as nn
 from torchvision import transforms 
@@ -139,6 +140,7 @@ def main():
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
+            sampled_ids = [i[0] for i in groupby(sampled_ids)]
             #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
             for j, word_array in enumerate(sampled_ids):
