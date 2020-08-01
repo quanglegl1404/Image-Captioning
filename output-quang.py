@@ -96,8 +96,9 @@ def sample(i, imgs, caps, caplens, decoder, encoder):
         print(f"decoder length j: {j},{decode_lengths[j]}")
         print(f"p: {p}")
         # pred = p[:decode_lengths[j]]
-        print(f"actual prediction: {pred}")
+        
         pred = [w for w in p if w not in [config.PAD, config.START, config.END]]
+        print(f"actual prediction: {pred}")
         temp_preds.append(pred)  # remove pads, start, and end
     preds = temp_preds
     
