@@ -143,11 +143,11 @@ def main():
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
-            print(sampled_ids)
             #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
             for j, word_array in enumerate(sampled_ids):
                 img_id = ids[j]
+                print(f"Image id: {img_id}")
                 if img_id not in results_img:
                     results_img.add(img_id)
                     sampled_caption = []
