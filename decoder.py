@@ -207,7 +207,7 @@ class Decoder(nn.Module):
             
             h, c = self.decode_step(cat_val.float(),(h[:batch_size_t].float(), c[:batch_size_t].float()))
             preds = self.fc(self.dropout(h))
-            # print(f"prediction: {preds}")
+            print(f"prediction: {preds}")
             # print(f"torch max score: {torch.max(preds)}")
             predictions[:batch_size_t, t, :] = preds
             alphas[:batch_size_t, t, :] = alpha
