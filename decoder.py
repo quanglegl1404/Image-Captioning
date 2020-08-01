@@ -65,11 +65,6 @@ class Decoder(nn.Module):
         # soft attention
 
         self.attention = Attention(encoder_dim = self.encoder_dim, decoder_dim = self.decoder_dim, attention_dim = self.attention_dim)
-        # self.enc_att = nn.Linear(2048, 512)
-        # self.dec_att = nn.Linear(512, 512)
-        # self.att = nn.Linear(512, 1)
-        # self.relu = nn.ReLU()
-        # self.softmax = nn.Softmax(dim=1)
 
         # decoder layers
         self.dropout = nn.Dropout(p=self.dropout)
@@ -195,13 +190,7 @@ class Decoder(nn.Module):
 
         for t in range(max(dec_len)):
             batch_size_t = sum([l > t for l in dec_len ])
-            
-            # soft-attention
-            # enc_att = self.enc_att(encoder_out[:batch_size_t])
-            # dec_att = self.dec_att(h[:batch_size_t])
-            # att = self.att(self.relu(enc_att + dec_att.unsqueeze(1))).squeeze(2)
-            # alpha = self.softmax(att)
-            # attention_weighted_encoding = (encoder_out[:batch_size_t] * alpha.unsqueeze(2)).sum(dim=1)
+            print(f"batch size t: {batch_size_t}")
 
             attention_weighted_encoding, alpha = self.attention(encoder_out[:batch_size_t], h[:batch_size_t])
         
