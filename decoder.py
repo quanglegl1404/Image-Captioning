@@ -196,8 +196,7 @@ class Decoder(nn.Module):
             batch_size_t = sum([l > t for l in dec_len ])
             print(f"batch size t: {batch_size_t}")
 
-            print(f"encoder out: {encoder_out[:batch_size_t]}")
-            print(f"hidden state: h[:batch_size_t]")
+            print(f"hidden state: {h[:batch_size_t]}")
             attention_weighted_encoding, alpha = self.attention(encoder_out[:batch_size_t], h[:batch_size_t])
         
             gate = self.sigmoid(self.f_beta(h[:batch_size_t]))
@@ -209,7 +208,7 @@ class Decoder(nn.Module):
             h, c = self.decode_step(cat_val.float(),(h[:batch_size_t].float(), c[:batch_size_t].float()))
             preds = self.fc(self.dropout(h))
             print(f"prediction: {preds}")
-            print(f"torch max score: {torch.max(preds, dim=2)}")
+            print(f"torch max score: {torch.max(preds)}")
             predictions[:batch_size_t, t, :] = preds
             print(f"prediction at batch size t, t {torch.max(predictions, dim=2) }")
             alphas[:batch_size_t, t, :] = alpha
