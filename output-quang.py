@@ -148,6 +148,7 @@ def main():
             for j, word_array in enumerate(sampled_ids):
                 img_id = ids[j]
                 print(f"Image id: {img_id}")
+                print(f"word array: {word_array}")
                 if img_id not in results_img:
                     results_img.add(img_id)
                     sampled_caption = []
