@@ -188,8 +188,11 @@ class Decoder(nn.Module):
         predictions = torch.zeros(batch_size, max_dec_len, vocab_size).to(self.device)
         alphas = torch.zeros(batch_size, max_dec_len, num_pixels).to(self.device)
         print(f"Max decoder length: {max(dec_len)}")
+        print(f"Decoder length: {dec_len}")
 
         for t in range(max(dec_len)):
+            for l in dec_len:
+                print(f"l: {l}")
             print(f"t: {t},{[l > t for l in dec_len ]}")
             batch_size_t = sum([l > t for l in dec_len ])
             print(f"batch size t: {batch_size_t}")
