@@ -35,23 +35,16 @@ class DataLoader(data.Dataset):
         ann_id = self.ids[index]
         caption = coco.anns[ann_id]['caption']
         img_id = coco.anns[ann_id]['image_id']
-        #print(f"Image id: {img_id}")
         path = coco.loadImgs(img_id)[0]['file_name']
         fullPath = os.path.join(self.root, path);
-        #print(f"Full path: {fullPath}")
         try:
-            ##todo: pass
-            # if os.path.exists(fullPath):
-            #     print(f"{fullPath} does exist")
             image = Image.open(fullPath).convert('RGB')
             if self.transform is not None:
                 image = self.transform(image)
 
             tokens = nltk.tokenize.word_tokenize(str(caption).lower())
-            #print("Done tokenizing")
             caption = []
             caption.append(vocab('<start>'))
-            #print("Start extending caption")
             for token in tokens:
                 if token == '<unk>':
                     caption.extend([vocab['[unk]']])
@@ -81,7 +74,6 @@ def collate_fn(data):
         return
 
     data.sort(key=lambda  x: len(x[1]), reverse=True)
-    #print(data)
     images, captions, img_ids = zip(*data)
 
     images = torch.stack(images, 0)
@@ -100,7 +92,7 @@ def get_loader(method, vocab, batch_size):
         root = config.train_img_path
         json = config.caption_path
     elif method =='val':
-        root = config.val_img_path #'../../Images/resized2017'
+        root = config.val_img_path
         json = config.validation_path
 
     # rasnet transformation/normalization

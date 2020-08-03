@@ -88,6 +88,7 @@ def sample(i, imgs, caps, caplens, decoder, encoder):
     losses.update(loss.item(), sum(decode_lengths))
 
     # Hypotheses
+    print(f"Scores dimension 2: {torch.max(scores}")
     _, preds = torch.max(scores, dim=2)
     preds = preds.tolist()
     print(f"prediction after max: {preds}")
@@ -142,13 +143,9 @@ def main():
     curr_id = 0
     for i, (imgs, caps, caplens, ids) in enumerate(tqdm(val_loader)):
         try:
-            #image_path = config.val_img_path + imgs['file_name']
-            #image = load_image(image_path, transform)
-            #image_tensor = image.to(device)
 
             # Generate an caption from the image
             sampled_ids = sample(i, imgs, caps, caplens, decoder, encoder)
-            #sampled_ids = sampled_ids[]        # (1, max_seq_length) -> (max_seq_length)
 
             for j, word_array in enumerate(sampled_ids):
                 img_id = ids[j]
@@ -162,7 +159,6 @@ def main():
                     for word_id in word_array:
                         token = vocab.idx2word[word_id]
                         token_list.append(token)
-                        # sampled_caption.append(word)
                     sentence = ' '.join(token_list)
 
                     print(f"{sentence}")
@@ -179,40 +175,10 @@ def main():
             print(e)
             pass
 
-    # with open(config.machine_output_path, 'w+') as f_results:
-    #     f_results.write(json.dumps(results_data, ensure_ascii=False))
+    with open(config.machine_output_path, 'w+') as f_results:
+        f_results.write(json.dumps(results_data, ensure_ascii=False))
     
     print("Finished")
-    #         sampled_caption = []
-
-    #         for word_id in sampled_ids:
-    #             word = vocab.idx2word[word_id]
-    #             if not word in ['<start>', '<end>']:
-    #                 sampled_caption.append(word)
-    #             if word == '<end>':
-    #                 break
-    #         sentence = ' '.join(sampled_caption)
-    #         sentence = sentence.replace('<start> ','')
-    #         sentence = sentence.replace(' <end>', '')
-    #         record = {
-    #             'image_id': int(imgs['id']),
-    #             'caption': sentence,
-    #             'id': curr_id
-    #         }
-    #         curr_id+=1
-    #         results_data.append(record)
-    #         if index%10 == 0:
-    #             print(f"Done image {index}/{len(images)}")
-    #     except Exception as e:
-    #         print(e)
-    #         pass
-    # with open(config.machine_output_path, 'w+') as f_results:
-    #     f_results.write(json.dumps(results_data, ensure_ascii=False))
-    # print("Finished")
-    # Print out the image and the generated caption
-    # print (sentence)
-    # image = Image.open(path)
-    # plt.imshow(np.asarray(image))
 
 if __name__ == "__main__":
     main()

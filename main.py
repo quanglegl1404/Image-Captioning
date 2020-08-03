@@ -26,9 +26,7 @@ import torch.nn.functional as F
 import numpy as np
 import json
 import torchvision.transforms as transforms
-#import matplotlib.pyplot as plt
 import skimage.transform
-#from scipy.misc import imread, imresize
 from PIL import Image
 import matplotlib.image as mpimg
 from torchtext.vocab import Vectors, GloVe
@@ -38,9 +36,7 @@ import imageio
 from encoder import Encoder
 from decoder import Decoder
 from config import Config
-#from utils import load_checkpoints
 import os
-#from online_data_loader import get_loader
 
 ###################
 # START Parameters
@@ -88,9 +84,6 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased', do_low
 BertModel = BertModel.from_pretrained('bert-base-multilingual-cased').to(device)
 BertModel.eval()
 
-# # Load GloVe
-# glove_vectors = pickle.load(open('glove.6B/glove_words.pkl', 'rb'))
-# glove_vectors = torch.tensor(glove_vectors)
 
 # vocab indices
 PAD = config.PAD
@@ -104,7 +97,6 @@ with open('data/vocab.pkl', 'rb') as f:
 
 # load data
 train_loader = get_loader('train', vocab, batch_size)
-#val_loader = get_loader('val', vocab, batch_size)
 
 #############
 # Init model
@@ -112,18 +104,13 @@ train_loader = get_loader('train', vocab, batch_size)
 
 criterion = nn.CrossEntropyLoss().to(device)
 
-if from_checkpoint:
-    print("Do not load checkpoint")
-    # encoder, decoder, decoder_optimizer = load_checkpoints()
-
 else:
     encoder = Encoder().to(device)
     encoder_optimizer = torch.optim.Adam(params=encoder.parameters(),
                                                  lr=1e-4)
     decoder = Decoder(vocab_size=len(vocab),use_glove=glove_model, use_bert=bert_model, vocab=vocab, device=device, BertTokenizer=tokenizer, BertModel=BertModel).to(device)
-    #params = list(decoder.parameters()) + list(encoder.adaptive_pool.parameters())
+
     decoder_optimizer = torch.optim.Adam(params=decoder.parameters(),lr=decoder_lr)
-    #decoder_optimizer = torch.optim.Adam(params=params,lr=decoder_lr)
 
 ###############
 # Train model
@@ -150,8 +137,6 @@ def train():
                 if imgs == None:
                     print('Skip none')
                     continue
-                # if not imgs or not caps or not caplens:
-                #     continue
 
                 imgs = encoder(imgs.to(device))
                 caps = caps.to(device)
@@ -160,15 +145,12 @@ def train():
                 scores = pack_padded_sequence(scores, decode_lengths, batch_first=True)[0]
 
                 targets = caps_sorted[:, 1:]
-                #print(f"Targets: {target}")
                 targets = pack_padded_sequence(targets, decode_lengths, batch_first=True)[0]
 
                 loss = criterion(scores, targets).to(device)
 
                 loss += ((1. - alphas.sum(dim=1)) ** 2).mean()
 
-                #decoder.zero_grad()
-                #encoder.zero_grad()
                 decoder_optimizer.zero_grad()
                 if encoder_optimizer is not None:
                     encoder_optimizer.zero_grad()
@@ -185,48 +167,16 @@ def train():
                     encoder_optimizer.step()
                 losses.update(loss.item(), sum(decode_lengths))
 
-                # save model each 100 batches
+                # save model each 50 batches
                 if i%50==0 and i!=0:
                     print('epoch '+str(epoch+1)+'/60 ,Batch '+str(i)+'/'+str(num_batches)+' loss: '+str(losses.avg))
-                    # if(losses.avg < min_losses):
-                    #   min_losses = losses.avg
-                    #   print('saving min_losses...')
-                    #   torch.save({
-                    #     'epoch': epoch,
-                    #     'model_state_dict': decoder.state_dict(),
-                    #     'optimizer_state_dict': decoder_optimizer.state_dict(),
-                    #     'loss': loss,
-                    #   }, './checkpoints/june12/decoder_min')
-                        
-                    #   torch.save({
-                    #     'epoch': epoch,
-                    #     'model_state_dict': encoder.state_dict(),
-                    #     'loss': loss,
-                    #     }, './checkpoints/june12/encoder_min')
                         # adjust learning rate (create condition for this)
                     for param_group in decoder_optimizer.param_groups:
                         param_group['lr'] = param_group['lr'] * 0.8
 
-                    #print(f'saving model...')
-
-            #print(f"min losses: {min_losses}")
-                    # torch.save({
-                    #     'epoch': epoch,
-                    #     'model_state_dict': decoder.state_dict(),
-                    #     'optimizer_state_dict': decoder_optimizer.state_dict(),
-                    #     'loss': loss,
-                    #     }, './checkpoints/june11/decoder_mid')
-
-                    # torch.save({
-                    #     'epoch': epoch,
-                    #     'model_state_dict': encoder.state_dict(),
-                    #     'loss': loss,
-                    #     }, './checkpoints/june11/encoder_mid')
-
-                    # print('model saved')
             print(f'Loss: {loss}')
-            torch.save(decoder.state_dict(),'./checkpoints/decoder_'+str(epoch+1)+'_july_28_vie_bert.ckpt')
-            torch.save(decoder.state_dict(),'./checkpoints/encoder_'+str(epoch+1)+'_july_28_vie_bert.ckpt')
+            torch.save(decoder.state_dict(),'./checkpoints/decoder_'+str(epoch+1)+'_july_31_vie_bert.ckpt')
+            torch.save(decoder.state_dict(),'./checkpoints/encoder_'+str(epoch+1)+'_july_31_vie_bert.ckpt')
 
             print('epoch checkpoint saved')
         except Exception as ex:
@@ -243,6 +193,3 @@ def train():
 
 if train_model:
     train()
-
-# if valid_model:
-#     validate()

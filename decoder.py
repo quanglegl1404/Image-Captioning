@@ -201,14 +201,16 @@ class Decoder(nn.Module):
         
             gate = self.sigmoid(self.f_beta(h[:batch_size_t]))
             attention_weighted_encoding = gate * attention_weighted_encoding
+            print(f"embedding size: {embeddings.shape}")
             
             batch_embeds = embeddings[:batch_size_t, t, :]        
             cat_val = torch.cat([batch_embeds.double(), attention_weighted_encoding.double()], dim=1)
             
             h, c = self.decode_step(cat_val.float(),(h[:batch_size_t].float(), c[:batch_size_t].float()))
             preds = self.fc(self.dropout(h))
-            print(f"prediction: {preds}")
+            print(f"prediction: {preds}, size: {preds.shape}")
             # print(f"torch max score: {torch.max(preds)}")
+            print(f"predictions: {predictions[:batch_size_t, t, :]},{predictions[:batch_size_t, t, :].shape} ")
             predictions[:batch_size_t, t, :] = preds
             alphas[:batch_size_t, t, :] = alpha
             
