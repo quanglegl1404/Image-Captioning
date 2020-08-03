@@ -48,17 +48,11 @@ def build_vocab(json, threshold, tokenizer):
         caption = str(coco.anns[id]['caption'])
         tokens = tokenize(caption.lower(),tokenizer)
         for j, item in enumerate(tokens):
-            #print(item)
             if("_" in item):
-                #print(True)
                 temp = tokenize(item.replace("_", " "),tokenizer)
                 counter.update(temp)
             else:
                 counter.update(tokens)
-        # if("_" in enumerate(tokens))
-        #     tokens.replace("_", " ")
-
-        #counter.update(tokens)
 
         if (i+1) % 100000 == 0:
             print(f"[{i+1}/{len(ids)}] Tokenized the captions.")
@@ -76,8 +70,6 @@ def build_vocab(json, threshold, tokenizer):
     return vocab
 
 def tokenize(caption, tokenizer):
-    # if tokenizer == 'rdr':
-    #     return rdrsegmenter.tokenize(caption)[0]
     
     return nltk.tokenize.word_tokenize(caption)
 
@@ -110,25 +102,6 @@ def main():
     #print(vocab.__dict__)
     print(f"Vocabulary size: {len(vocab)}")
 
-    # print("resizing images...")
-    # splits = ['val','train']
-
-    # for split in splits:
-    #     folder = './data/%s2017' %split
-    #     resized_folder = './data/%s2017_resized/' %split
-    #     if not os.path.exists(resized_folder):
-    #         os.makedirs(resized_folder)
-    #     image_files = os.listdir(folder)
-    #     num_images = len(image_files)
-    #     for i, image_file in enumerate(image_files):
-    #         with open(os.path.join(folder, image_file), 'r+b') as f:
-    #             with Image.open(f) as image:
-    #                 image = resize_image(image)
-    #                 image.save(os.path.join(resized_folder, image_file), image.format)
-
-    # print("done resizing images...")
-
-#caption_path = './data/annotations/uitviic_captions_val2017.json'
 vocab_path = './data/vocab.pkl'
 threshold = 1
 
